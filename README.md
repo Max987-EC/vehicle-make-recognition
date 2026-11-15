@@ -50,3 +50,19 @@ Figure 13 干擾規則：原圖上做 1–10 像素方框模糊、標準差 0–
 無有效車框時保留整張圖片，並記錄於 cropped_reproduction/data/crop_audit.csv，以維持原本的 800／200 切分。
 只準備資料可將 all 改為 prepare。中斷後執行相同命令可繼續。新權重及報告位於 cropped_reproduction。
 資料仍為 CompCars，車框與未偵測到車輛時的處理規則是本次設定。
+
+## 期末報告與助教重現
+
+1. 在 VS Code 開啟儲存庫，先執行「01 建立與檢查環境」。若使用 CPU 示範，也可直接安裝鎖定套件，再執行下列指令。
+2. 依 [CompCars 官方指引](https://mmlab.ie.cuhk.edu.hk/datasets/comp_cars/instruction.txt) 取得 surveillance 的 sv_data 分卷並解壓縮。執行下列指令，將路徑替換為包含 image 子資料夾的 sv_data。程式只取固定的 1,000 張原圖，依既有車框還原裁切版並核對兩版像素雜湊與 800／200 切分。
+
+```powershell
+.\.venv\Scripts\python.exe restore_compcars.py 'D:/CompCars/sv_data'
+.\.venv\Scripts\python.exe verify_split.py
+.\.venv\Scripts\python.exe restore_compcars.py --demo
+```
+
+3. VS Code「終端機 → 執行工作 → 期末報告：單張辨識」也可執行同一個 CPU 示範。完整裁切版重訓使用 `crop_reproduce.py all`，需 CUDA 與 requirements.extended.txt 的套件。已還原裁切清單時，可直接訓練。
+4. 各模型目錄提供逐圖預測、逐輪紀錄及評估數據。公開版透過 Git LFS 提供兩版模型的最終權重。請安裝 Git LFS 並執行 git lfs pull。續訓存檔由本機訓練產生。要另存原始數據後重訓，請先備份成果或使用獨立副本。
+
+資料引用：L. Yang, P. Luo, C. C. Loy, and X. Tang, “A Large-Scale Car Dataset for Fine-Grained Categorization and Verification,” CVPR 2015。

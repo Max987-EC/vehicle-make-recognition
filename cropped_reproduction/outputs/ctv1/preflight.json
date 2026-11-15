@@ -1,0 +1,41 @@
+{
+  "batch_size": 32,
+  "training_peak_bytes": 1985390080,
+  "parameters": {
+    "trainable": 6551877,
+    "bn_moving_state": 4032,
+    "keras_style_total": 6555909
+  },
+  "block_shapes": [
+    [
+      32,
+      121,
+      121
+    ],
+    [
+      64,
+      60,
+      60
+    ],
+    [
+      128,
+      29,
+      29
+    ],
+    [
+      256,
+      14,
+      14
+    ],
+    [
+      512,
+      6,
+      6
+    ],
+    [
+      1024,
+      2,
+      2
+    ]
+  ]
+}

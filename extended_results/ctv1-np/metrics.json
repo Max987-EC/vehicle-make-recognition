@@ -1,0 +1,120 @@
+{
+  "model": "ctv1-np",
+  "source": "使用替代資料重現論文方法",
+  "manifest_sha256": "cf75a7616717a3332ae290ede69b13d951f7e2dc5249413ca7e962bdaa23e4bb",
+  "accuracy": 0.98,
+  "weighted_f1": 0.9799809135022319,
+  "classification_report": {
+    "Toyota": {
+      "precision": 0.9487179487179487,
+      "recall": 0.9736842105263158,
+      "f1-score": 0.961038961038961,
+      "support": 38.0
+    },
+    "Honda": {
+      "precision": 1.0,
+      "recall": 0.9459459459459459,
+      "f1-score": 0.9722222222222222,
+      "support": 37.0
+    },
+    "Mazda": {
+      "precision": 0.9814814814814815,
+      "recall": 1.0,
+      "f1-score": 0.9906542056074766,
+      "support": 53.0
+    },
+    "Nissan": {
+      "precision": 0.972972972972973,
+      "recall": 1.0,
+      "f1-score": 0.9863013698630136,
+      "support": 36.0
+    },
+    "Volkswagen": {
+      "precision": 1.0,
+      "recall": 0.9722222222222222,
+      "f1-score": 0.9859154929577465,
+      "support": 36.0
+    },
+    "accuracy": 0.98,
+    "macro avg": {
+      "precision": 0.9806344806344807,
+      "recall": 0.9783704757388968,
+      "f1-score": 0.979226450337884,
+      "support": 200.0
+    },
+    "weighted avg": {
+      "precision": 0.980484137984138,
+      "recall": 0.98,
+      "f1-score": 0.9799809135022319,
+      "support": 200.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      37,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      1,
+      35,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      53,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      36,
+      0
+    ],
+    [
+      1,
+      0,
+      0,
+      0,
+      35
+    ]
+  ],
+  "parameters": {
+    "trainable": 6534277,
+    "bn_moving_state": 3968,
+    "keras_style_total": 6538245
+  },
+  "training_seconds": 1505.0685638007708,
+  "inference_seconds_per_batch25": [
+    0.061484500067308545,
+    0.06341579998843372,
+    0.06856420007534325,
+    0.06777050020173192,
+    0.06823350000195205,
+    0.06837629992514849,
+    0.06750550004653633,
+    0.06860810006037354
+  ],
+  "inference_mean_seconds_per_batch25": 0.06674480004585348,
+  "inference_seconds_per_image": 0.0026697920018341394,
+  "pipeline_seconds_per_image": 0.01084833350032568,
+  "warmup_batches": 3,
+  "timing_scope": "forward only, preloaded GPU tensors; separate pipeline includes disk decode/resize/transfer",
+  "environment": {
+    "python": "3.11.5",
+    "torch": "2.7.1+cu128",
+    "cuda_runtime": "12.8",
+    "cudnn": 90701,
+    "cuda_available": true,
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "platform": "Windows-10-10.0.26300-SP0"
+  },
+  "weights_bytes": 26162459
+}

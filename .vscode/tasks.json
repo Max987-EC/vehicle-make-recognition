@@ -297,6 +297,19 @@
         "${workspaceFolder}/extended_results/report.md"
       ],
       "problemMatcher": []
+    },
+    {
+      "type": "process",
+      "args": [
+        "restore_compcars.py",
+        "--demo"
+      ],
+      "label": "期末報告：單張辨識",
+      "problemMatcher": [],
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
     }
   ]
 }

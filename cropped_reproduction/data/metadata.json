@@ -1,0 +1,29 @@
+{
+  "source": "compcars",
+  "source_csv": "data\\source_daytime.csv",
+  "source_csv_sha256": "5fc9a27c29cd443ca96ba51d4544881621c320a1112f62486e3e62237062ade1",
+  "lighting": "daylight appearance visually reviewed; capture timestamps unavailable",
+  "daytime_decisions_sha256": "2daa94327b27929d01cafb4bcc925470f48b0e311869d77c036ce7c8c4a62fbf",
+  "mapping_source": "official sv_make_model_name.mat; daylight visual review in data/daytime_review/review_summary.json",
+  "classes": [
+    "Toyota",
+    "Honda",
+    "Mazda",
+    "Nissan",
+    "Volkswagen"
+  ],
+  "seed": 42,
+  "counts": {
+    "train": 800,
+    "test": 200
+  },
+  "selection_counts": {
+    "Honda": 240,
+    "Mazda": 234,
+    "Nissan": 240,
+    "Volkswagen": 239,
+    "Toyota": 239
+  },
+  "interpretation": "CompCars + YOLO11m crop; full frame fallback on detection failure",
+  "near_duplicate_review": "not performed; exact pixel duplicates removed"
+}

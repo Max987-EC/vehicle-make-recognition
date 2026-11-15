@@ -1,0 +1,76 @@
+{
+  "config": {
+    "epochs": 200,
+    "image_size": 244,
+    "classes": 5,
+    "images_per_class": 200,
+    "test_fraction": 0.2,
+    "seed": 42,
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "adam_betas": [
+      0.9,
+      0.999
+    ],
+    "adam_epsilon": 1e-07,
+    "weight_decay": 0.0,
+    "bn_epsilon": 0.001,
+    "bn_retention": 0.99,
+    "bn_scale": false,
+    "pixel_scale": "zero_one",
+    "resize": "bilinear",
+    "initialization": "keras_glorot_uniform",
+    "pool_padding": "valid",
+    "workers": 0,
+    "device": "cuda",
+    "assumptions_confirmed": true,
+    "assumption_note": "User explicitly accepted the supplementary settings and authorized all three formal training runs on 2026-10-26. See docs/assumptions.md."
+  },
+  "source": {
+    "source": "compcars",
+    "source_csv": "data\\source_daytime.csv",
+    "source_csv_sha256": "5fc9a27c29cd443ca96ba51d4544881621c320a1112f62486e3e62237062ade1",
+    "lighting": "daylight appearance visually reviewed; capture timestamps unavailable",
+    "daytime_decisions_sha256": "2daa94327b27929d01cafb4bcc925470f48b0e311869d77c036ce7c8c4a62fbf",
+    "mapping_source": "official sv_make_model_name.mat; daylight visual review in data/daytime_review/review_summary.json",
+    "classes": [
+      "Toyota",
+      "Honda",
+      "Mazda",
+      "Nissan",
+      "Volkswagen"
+    ],
+    "seed": 42,
+    "counts": {
+      "train": 800,
+      "test": 200
+    },
+    "selection_counts": {
+      "Honda": 240,
+      "Mazda": 234,
+      "Nissan": 240,
+      "Volkswagen": 239,
+      "Toyota": 239
+    },
+    "interpretation": "使用替代資料重現論文方法",
+    "near_duplicate_review": "not performed; exact pixel duplicates removed"
+  },
+  "environment": {
+    "python": "3.11.5",
+    "torch": "2.7.1+cu128",
+    "cuda_runtime": "12.8",
+    "cudnn": 90701,
+    "cuda_available": true,
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "platform": "Windows-10-10.0.26300-SP0"
+  },
+  "parameters": {
+    "trainable": 566853,
+    "bn_moving_state": 4128,
+    "keras_style_total": 570981
+  },
+  "training_seconds_excluding_checkpoint_io": 1454.1090094000829,
+  "image_preload_seconds_this_invocation": 5.087794100007159,
+  "data_loading": "fixed preprocessed CPU tensor cache; no augmentation",
+  "manifest_sha256": "cf75a7616717a3332ae290ede69b13d951f7e2dc5249413ca7e962bdaa23e4bb"
+}

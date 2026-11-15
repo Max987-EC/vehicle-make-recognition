@@ -1,0 +1,27 @@
+{
+  "epochs": 200,
+  "image_size": 244,
+  "classes": 5,
+  "images_per_class": 200,
+  "test_fraction": 0.2,
+  "seed": 42,
+  "batch_size": 32,
+  "learning_rate": 0.001,
+  "adam_betas": [
+    0.9,
+    0.999
+  ],
+  "adam_epsilon": 1e-07,
+  "weight_decay": 0.0,
+  "bn_epsilon": 0.001,
+  "bn_retention": 0.99,
+  "bn_scale": false,
+  "pixel_scale": "zero_one",
+  "resize": "bilinear",
+  "initialization": "keras_glorot_uniform",
+  "pool_padding": "valid",
+  "workers": 0,
+  "device": "cuda",
+  "assumptions_confirmed": true,
+  "assumption_note": "User explicitly accepted the supplementary settings and authorized all three formal training runs on 2026-10-26. See docs/assumptions.md."
+}

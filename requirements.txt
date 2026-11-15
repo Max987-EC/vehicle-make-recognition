@@ -1,0 +1,7 @@
+# torch 2.7.1+cu128 installed separately by setup.cmd from the official CUDA index.
+pillow
+numpy
+scikit-learn
+matplotlib
+pytest
+scipy

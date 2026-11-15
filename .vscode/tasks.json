@@ -1,0 +1,302 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "01 建立與檢查環境",
+      "type": "process",
+      "command": "cmd.exe",
+      "args": [
+        "/d",
+        "/c",
+        "setup.cmd"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONUTF8": "1",
+          "PYTHONDONTWRITEBYTECODE": "1"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "02 檢查圖片與原始切分",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "ta-task.ps1",
+        "check"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONUTF8": "1",
+          "PYTHONDONTWRITEBYTECODE": "1"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "03 使用原權重驗證結果",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "ta-task.ps1",
+        "verify"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONUTF8": "1",
+          "PYTHONDONTWRITEBYTECODE": "1"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "04 從頭重現三模型",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "ta-task.ps1",
+        "train"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONUTF8": "1",
+          "PYTHONDONTWRITEBYTECODE": "1"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "05 繼續中斷的重跑",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "ta-task.ps1",
+        "resume"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONUTF8": "1",
+          "PYTHONDONTWRITEBYTECODE": "1"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "06 開啟最近一次完整重跑報告",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "ta-task.ps1",
+        "report-path"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONUTF8": "1",
+          "PYTHONDONTWRITEBYTECODE": "1"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "07 延伸實驗 GPU 預檢",
+      "type": "process",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": [
+        "-B",
+        "-X",
+        "utf8",
+        "extend.py",
+        "check"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "YOLO_CONFIG_DIR": "${workspaceFolder}/.cache/ultralytics",
+          "YOLO_AUTOINSTALL": "false"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "08 完整延伸實驗／續訓",
+      "type": "process",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": [
+        "-B",
+        "-X",
+        "utf8",
+        "extend.py",
+        "all"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "YOLO_CONFIG_DIR": "${workspaceFolder}/.cache/ultralytics",
+          "YOLO_AUTOINSTALL": "false"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "09 基準模型／續訓",
+      "type": "process",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": [
+        "-B",
+        "-X",
+        "utf8",
+        "extend.py",
+        "baselines"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "YOLO_CONFIG_DIR": "${workspaceFolder}/.cache/ultralytics",
+          "YOLO_AUTOINSTALL": "false"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "10 Padding 與 Stride／續訓",
+      "type": "process",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": [
+        "-B",
+        "-X",
+        "utf8",
+        "extend.py",
+        "padding"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "YOLO_CONFIG_DIR": "${workspaceFolder}/.cache/ultralytics",
+          "YOLO_AUTOINSTALL": "false"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "11 BatchNorm／續訓",
+      "type": "process",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": [
+        "-B",
+        "-X",
+        "utf8",
+        "extend.py",
+        "bn"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "YOLO_CONFIG_DIR": "${workspaceFolder}/.cache/ultralytics",
+          "YOLO_AUTOINSTALL": "false"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "12 影像干擾測試",
+      "type": "process",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": [
+        "-B",
+        "-X",
+        "utf8",
+        "extend.py",
+        "robustness"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "YOLO_CONFIG_DIR": "${workspaceFolder}/.cache/ultralytics",
+          "YOLO_AUTOINSTALL": "false"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "13 YOLO 車輛裁切",
+      "type": "process",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": [
+        "-B",
+        "-X",
+        "utf8",
+        "extend.py",
+        "detection"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "YOLO_CONFIG_DIR": "${workspaceFolder}/.cache/ultralytics",
+          "YOLO_AUTOINSTALL": "false"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "14 開啟延伸實驗報告",
+      "type": "shell",
+      "command": "code",
+      "args": [
+        "--reuse-window",
+        "${workspaceFolder}/extended_results/report.md"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

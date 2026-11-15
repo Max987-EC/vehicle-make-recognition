@@ -1,0 +1,6 @@
+torchvision==0.22.1+cu128
+ultralytics==8.3.161
+opencv-python==4.11.0.86
+pandas==3.1.1
+ultralytics-thop==2.2.5
+py-cpuinfo==9.0.0

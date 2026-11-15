@@ -1,0 +1,16 @@
+.venv/
+.cache/
+__pycache__/
+.pytest_cache/
+data/downloads/
+data/raw/
+outputs/
+*.pyc
+reproduction/
+extended_results/
+
+/cropped_reproduction/data/images/
+/cropped_reproduction/outputs/
+*.pt
+*.tmp
+*.log

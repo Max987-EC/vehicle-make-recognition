@@ -1,0 +1,8 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": ["tests"],
+  "files.exclude": {"**/__pycache__": true},
+  "search.exclude": {".venv": true, ".cache": true, "data/raw": true},
+  "terminal.integrated.env.windows": {"PYTHONUTF8": "1", "PIP_CACHE_DIR": "${workspaceFolder}/.cache/pip"}
+}

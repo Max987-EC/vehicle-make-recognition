@@ -98,14 +98,8 @@ def report():
                          f'{paper_counts.get(name, "")}|{m["parameters"]["keras_style_total"]}|{m["weights_bytes"]}|'
                          f'{paper_training[name]:.2f}|{m["training_seconds"]:.2f}|{1000*m["inference_seconds_per_image"]:.3f}|{delta}|')
         lines.append("")
-    for name, label in (("robustness/metrics.csv", "影像干擾"), ("detection/results.csv", "YOLO 裁切")):
+    for name, label in (("robustness/metrics.csv", "影像干擾"),):
         lines.append(f"- [{label}]({name})" if (OUT / name).exists() else f"- {label}：待完成")
-    detection_path = OUT / "detection/results.csv"
-    if detection_path.exists():
-        with detection_path.open(encoding="utf-8-sig", newline="") as stream:
-            detection_rows = list(csv.DictReader(stream))
-        success = sum(r["status"] == "ok" for r in detection_rows)
-        lines.append(f"- YOLO 成功裁切 {success}／{len(detection_rows)} 張。")
     temporary = OUT / "report.tmp"
     temporary.write_text("\n".join(lines), encoding="utf8")
     temporary.replace(OUT / "report.md")
@@ -117,7 +111,7 @@ def execute():
     from src.extended_models import build, BASELINES, PADDING, NORMALIZATION
     groups = {"baselines": BASELINES, "padding": PADDING, "bn": NORMALIZATION}
     parser = argparse.ArgumentParser()
-    parser.add_argument("group", choices=[*groups, "all", "check", "report", "robustness", "detection",
+    parser.add_argument("group", choices=[*groups, "all", "check", "report", "robustness",
                                          *BASELINES, *PADDING, *NORMALIZATION])
     args = parser.parse_args()
     cfg = json.loads((ROOT / "configs/paper.json").read_text(encoding="utf-8-sig"))
@@ -127,9 +121,9 @@ def execute():
         return
     device_for(cfg)
     validate_manifest(ROOT)
-    if args.group in ("robustness", "detection"):
-        from src.image_experiments import robustness, detection
-        {"robustness": robustness, "detection": detection}[args.group](ROOT, OUT, cfg)
+    if args.group == "robustness":
+        from src.image_experiments import robustness
+        robustness(ROOT, OUT, cfg)
         report()
         return
     all_models = (*BASELINES, *PADDING, *NORMALIZATION)
@@ -147,11 +141,9 @@ def execute():
                 raise
         report()
     if args.group == "all":
-        from src.image_experiments import robustness, detection
+        from src.image_experiments import robustness
         if not (OUT / "robustness/predictions.csv").exists():
             robustness(ROOT, OUT, cfg)
-        if not (OUT / "detection/results.csv").exists():
-            detection(ROOT, OUT, cfg)
         report()
     if failures:
         raise SystemExit("未完成：" + ", ".join(failures))

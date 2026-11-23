@@ -269,26 +269,6 @@
       "problemMatcher": []
     },
     {
-      "label": "13 YOLO 車輛裁切",
-      "type": "process",
-      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
-      "args": [
-        "-B",
-        "-X",
-        "utf8",
-        "extend.py",
-        "detection"
-      ],
-      "options": {
-        "cwd": "${workspaceFolder}",
-        "env": {
-          "YOLO_CONFIG_DIR": "${workspaceFolder}/.cache/ultralytics",
-          "YOLO_AUTOINSTALL": "false"
-        }
-      },
-      "problemMatcher": []
-    },
-    {
       "label": "14 開啟延伸實驗報告",
       "type": "shell",
       "command": "code",

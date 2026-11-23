@@ -1,6 +1,5 @@
 """Restore the fixed CompCars files from an official, locally extracted copy."""
 import argparse
-import ast
 import csv
 import hashlib
 from pathlib import Path
@@ -22,16 +21,9 @@ def digest(image):
 
 def restore(source):
     manifest = rows(ROOT / "data/manifest.csv")
-    cropped_root = ROOT / "cropped_reproduction"
-    audit = rows(cropped_root / "data/crop_audit.csv")
-    cropped = rows(cropped_root / "data/manifest.csv")
-    if (len(manifest), len(audit), len(cropped)) != (1000, 1000, 1000):
-        raise ValueError("固定資料清單必須包含 1,000 張。")
-    for original, record, expected in zip(manifest, audit, cropped, strict=True):
-        if (original["path"], expected["path"], original["split"]) != (
-            record["original"], record["path"], record["split"]
-        ) or any(original[key] != expected[key] for key in ("label", "make", "split")):
-            raise ValueError("裁切對照與原始切分不一致。")
+    if len(manifest) != 1000:
+        raise ValueError("Expected 1,000 fixed images.")
+    for original in manifest:
         target = ROOT / original["path"]
         incoming = source / Path(original["path"]).relative_to("data/raw/sv_data")
         if not incoming.is_file():
@@ -40,22 +32,12 @@ def restore(source):
             rgb = ImageOps.exif_transpose(opened).convert("RGB")
         if digest(rgb) != original["sha256_pixels"]:
             raise ValueError(f"原圖像素雜湊不同：{incoming}")
-        if record["status"] == "cropped":
-            rgb = rgb.crop(ast.literal_eval(record["xyxy"]))
-        elif record["status"] != "full_frame_fallback":
-            raise ValueError(f"未知裁切狀態：{record['status']}")
-        if digest(rgb) != expected["sha256_pixels"]:
-            raise ValueError(f"裁切圖像素雜湊不同：{expected['path']}")
         target.parent.mkdir(parents=True, exist_ok=True)
         if incoming.resolve() != target.resolve():
             shutil.copyfile(incoming, target)
-        destination = cropped_root / expected["path"]
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        rgb.save(destination)
     from src.data import validate_manifest
     validate_manifest(ROOT)
-    validate_manifest(cropped_root)
-    print("原圖及裁切圖各 1,000 張通過像素與 800／200 切分驗證。")
+    print("Verified 1,000 original images and the fixed 800/200 split.")
 
 
 def demo():

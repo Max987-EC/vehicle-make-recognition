@@ -1,3 +1,28 @@
+# 未裁切版交付
+
+本資料夾只使用 CompCars 原圖直接縮放至 244×244，包含三核心、五基準、十二消融及五種影像干擾。YOLO11m-cls 是品牌分類基準。
+
+GitHub 版提供程式、最終權重、三核心評估所需 checkpoint 與實測數據，圖片需依官方條件取得後還原。
+
+## 助教操作順序
+
+1. VS Code 開啟資料夾，執行「01 建立與檢查環境」。
+2. GitHub 下載者先執行 git lfs pull，再依下列指令還原圖片；完整版已附固定 1,000 張。
+3. 執行「02 檢查圖片與原始切分」。
+4. 執行「03 使用原權重驗證結果」或「期末報告：單張辨識」。
+5. 要從頭訓練核心模型用 04，接續用 05，開啟報告用 06。
+6. 延伸模型先安裝 requirements.extended.txt。extend.py all 會略過已完成項目。從頭重跑延伸模型請在獨立副本備份後移出 extended_results 既有模型輸出，保留原基準紀錄。
+
+```powershell
+git lfs pull
+.\.venv\Scripts\python.exe restore_compcars.py 'D:/CompCars/sv_data'
+.\.venv\Scripts\python.exe verify_split.py
+.\.venv\Scripts\python.exe restore_compcars.py --demo
+```
+
+[CompCars 官方來源與條款](https://mmlab.ie.cuhk.edu.hk/datasets/comp_cars/index.html)
+
+
 > GitHub 版提供程式、固定資料清單與實測報告。CompCars 圖片請依官方條件取得，按 data/manifest.csv 放置原圖。模型權重可重訓產生。
 
 # 車頭品牌辨識：VS Code 助教繳交版
@@ -29,40 +54,10 @@
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements.extended.txt --extra-index-url https://download.pytorch.org/whl/cu128
-New-Item -ItemType Directory -Force .cache | Out-Null
-curl.exe -fL -o .cache/yolo11m.pt https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt
 ```
 
-使用 VS Code「終端機 → 執行工作」。07 驗證全部新增模型；08 依序訓練 17 個模型並執行兩項影像實驗；09 至 13 可執行各組；14 開啟報告。重新執行同一任務會接續最近的 checkpoint。輸出位於 extended_results，各模型完成評估後會寫入 complete.json。
+使用 VS Code「終端機 → 執行工作」。07 驗證全部新增模型；08 依序訓練 17 個模型並執行影像干擾測試；09 至 13 可執行各組；14 開啟報告。重新執行同一任務會接續最近的 checkpoint。輸出位於 extended_results，各模型完成評估後會寫入 complete.json。
 
 依 Figure 11，五區塊通道為 64／128／256／512／1024。Stride 版把後兩區塊的 3×3 卷積改為步長 2，1×1 維持步長 1；No Padding 版移除卷積 padding，池化沿用原設定。BN 消融以 Identity 取代 BN，卷積 bias 設定照舊。基準採 torchvision 的 VGG16、InceptionV3（關閉輔助分類頭）、ResNet50，另實作 MobileNet V1，YOLO11m-cls 使用官方架構設定及隨機初始化。PyTorch 的分類頭、初始化與 BN 計數可能與 TensorFlow 不同。評估仍計時八組各 25 張，記憶體不足的版本以已驗證的訓練 batch 大小切成子批次。
 
-Figure 13 干擾規則：原圖上做 1–10 像素方框模糊、標準差 0–100 的 Gaussian noise、0–0.018 機率的椒鹽噪聲、每通道扣除 0–100 的亮度，以及 2–11 個水滴。採固定種子；椒鹽最後一點約 0.018，水滴直徑按原圖短邊相對 600 像素縮放，使用模糊及半透明白色圓形近似。作者未公布精確合成程式，這些規則屬本次實作。YOLO 偵測示範使用官方 COCO 預訓練 YOLO11m，在既有 200 張測試圖上取信心最高的車、巴士或卡車框。
-
-### 先做 YOLO 裁切再訓練
-
-在 VS Code 開啟本專案，從 PowerShell 終端機執行：
-```powershell
-.\.venv\Scripts\python.exe -u crop_reproduce.py all
-```
-
-使用 .cache/yolo11m.pt 偵測車輛，取信心最高的車框，再由模型讀取時縮放至 244 × 244。
-無有效車框時保留整張圖片，並記錄於 cropped_reproduction/data/crop_audit.csv，以維持原本的 800／200 切分。
-只準備資料可將 all 改為 prepare。中斷後執行相同命令可繼續。新權重及報告位於 cropped_reproduction。
-資料仍為 CompCars，車框與未偵測到車輛時的處理規則是本次設定。
-
-## 期末報告與助教重現
-
-1. 在 VS Code 開啟儲存庫，先執行「01 建立與檢查環境」。若使用 CPU 示範，也可直接安裝鎖定套件，再執行下列指令。
-2. 依 [CompCars 官方指引](https://mmlab.ie.cuhk.edu.hk/datasets/comp_cars/instruction.txt) 取得 surveillance 的 sv_data 分卷並解壓縮。執行下列指令，將路徑替換為包含 image 子資料夾的 sv_data。程式只取固定的 1,000 張原圖，依既有車框還原裁切版並核對兩版像素雜湊與 800／200 切分。
-
-```powershell
-.\.venv\Scripts\python.exe restore_compcars.py 'D:/CompCars/sv_data'
-.\.venv\Scripts\python.exe verify_split.py
-.\.venv\Scripts\python.exe restore_compcars.py --demo
-```
-
-3. VS Code「終端機 → 執行工作 → 期末報告：單張辨識」也可執行同一個 CPU 示範。完整裁切版重訓使用 `crop_reproduce.py all`，需 CUDA 與 requirements.extended.txt 的套件。已還原裁切清單時，可直接訓練。
-4. 各模型目錄提供逐圖預測、逐輪紀錄及評估數據。公開版透過 Git LFS 提供兩版模型的最終權重。請安裝 Git LFS 並執行 git lfs pull。續訓存檔由本機訓練產生。要另存原始數據後重訓，請先備份成果或使用獨立副本。
-
-資料引用：L. Yang, P. Luo, C. C. Loy, and X. Tang, “A Large-Scale Car Dataset for Fine-Grained Categorization and Verification,” CVPR 2015。
+Figure 13 干擾規則：原圖上做 1–10 像素方框模糊、標準差 0–100 的 Gaussian noise、0–0.018 機率的椒鹽噪聲、每通道扣除 0–100 的亮度，以及 2–11 個水滴。採固定種子；椒鹽最後一點約 0.018，水滴直徑按原圖短邊相對 600 像素縮放，使用模糊及半透明白色圓形近似。作者未公布精確合成程式，這些規則屬本次實作。

@@ -123,35 +123,3 @@ def robustness(root, out, cfg):
         ax.legend()
         fig.savefig(target / f"{kind}.png", dpi=150)
         plt.close(fig)
-
-
-@torch.inference_mode()
-def detection(root, out, cfg):
-    from ultralytics import YOLO
-    model, rows, classes = load_context(root)
-    target = out / "detection"
-    target.mkdir(exist_ok=True)
-    weights = root / ".cache/yolo11m.pt"
-    if not weights.is_file():
-        raise FileNotFoundError("Missing .cache/yolo11m.pt; run the detection setup command in README.")
-    detector = YOLO(str(weights))
-    results = []
-    for i, row in enumerate(rows):
-        rgb = image(root, row)
-        result = detector.predict(Image.fromarray(rgb), classes=[2, 5, 7], device=0, verbose=False)[0]
-        record = dict(path=row["path"], truth=row["make"], status="no_vehicle",
-                      predicted="", confidence="", xyxy="")
-        if len(result.boxes):
-            best = result.boxes[result.boxes.conf.argmax().item()]
-            x1, y1, x2, y2 = map(int, best.xyxy[0].tolist())
-            crop = rgb[y1:y2, x1:x2]
-            if crop.size:
-                predicted = int(model(tensor(crop).unsqueeze(0).cuda()).argmax(1).item())
-                record.update(status="ok", predicted=classes[predicted], confidence=float(best.conf.item()),
-                              xyxy=f"{x1},{y1},{x2},{y2}")
-                if sum(r["status"] == "ok" for r in results) < 5:
-                    Image.fromarray(crop).save(target / f"example-{i:03d}.png")
-            else:
-                record["status"] = "empty_crop"
-        results.append(record)
-    write_rows(target / "results.csv", results)
